@@ -154,7 +154,7 @@ class Game {
 		if(!this.listenerCallbacks[eventName]) {
 			this.listenerCallbacks[eventName] = [];
 		}
-		this.listenerCallback[eventName].push(callback);
+		this.listenerCallbacks[eventName].push(callback);
 	}
 
 }
