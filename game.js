@@ -31,7 +31,7 @@ function clamp(min, max, variable) {
  * Used as an alternative to the double pipe operator
  */
 function verify(variable, defaultValue) {
-	if(typeof variable == "undefined" || !variable) {
+	if(typeof variable == "undefined" || !variable && variable !== false) {
 		return defaultValue;
 	}
 	return variable;
@@ -349,75 +349,76 @@ class SpawnTest extends Game {
     }
 }
 
-let defaults = {
-    	"gravity": GravityTest,
-	"canvas": CanvasTest,
-	"spawn": SpawnTest
-};
-
-function pushDefault(id, clazz) {
-	defaults[id] = clazz;
-}
+let defaults = {};
 
 function getDefault(id) {
     return defaults[id] || null;
 }
 
-let tags = document.getElementsByTagName("game");
-let games = [];
-
-for (let i = 0; i < tags.length; i++) {
-	let attributes = tags[i].getAttributes();
-	console.log(getDefault(attributes.default));
-    if (getDefault(attributes.default)) {
-		let clazz = getDefault(attributes.default);
-        games.push(new clazz(attributes));
-    }
+function pushDefault(id, clazz) {
+	defaults[id] = clazz;
 }
 
-let eventLists = ["mousedown", "mouseup", "mousemove", "keydown", "keyup", "click"];
+function init() {
 
-document.addEventListener("click", function(e) {
-    var canvas = null;
-	
-	games.forEach(function(game) {
-		if(game.getCanvas() === e.target) {
-			canvas = e.target;
-			game.setFocused();
-		} else {
-			game.setFocused(false);
-		}
-    });
-	
-	if(canvas !== null) {
-		var bounds = canvas.getBoundingClientRect();
-		mouse.x = event.pageX - bounds.left - scrollX;
-    	mouse.y = event.pageY - bounds.top - scrollY;
-		mouse.x /=  bounds.width; 
-   		mouse.y /=  bounds.height; 
-   		mouse.x *= canvas.width;
-   		mouse.y *= canvas.height;
+	let tags = document.getElementsByTagName("game");
+	let games = [];
+
+	for (let i = 0; i < tags.length; i++) {
+		let attributes = tags[i].getAttributes();
+		console.log(getDefault(attributes.default));
+    	if (getDefault(attributes.default)) {
+			let clazz = getDefault(attributes.default);
+        	games.push(new clazz(attributes));
+    	}
 	}
-}, true);
 
-eventLists.forEach(function(event) {
-    document.addEventListener(event, function(e) {
-        games.forEach(function(game) {
-            if (typeof game["on" + event] == "function" && game.isFocused()) {
-                game["on" + event](e);
-            }
-        });
-    });
-});
+	let eventLists = ["mousedown", "mouseup", "mousemove", "keydown", "keyup", "click"];
+
+	document.addEventListener("click", function(e) {
+    	var canvas = null;
+	
+		games.forEach(function(game) {
+			if(game.getCanvas() === e.target) {
+				canvas = e.target;
+				game.setFocused();
+			} else {
+			game.setFocused(false);
+			}
+    	});
+		if(canvas !== null) {
+			var bounds = canvas.getBoundingClientRect();
+			mouse.x = event.pageX - bounds.left - scrollX;
+    		mouse.y = event.pageY - bounds.top - scrollY;
+			mouse.x /=  bounds.width; 
+   			mouse.y /=  bounds.height; 
+   			mouse.x *= canvas.width;
+   			mouse.y *= canvas.height;
+		}
+	}, true);
+
+	eventLists.forEach(function(event) {
+    	document.addEventListener(event, function(e) {
+        	games.forEach(function(game) {
+            	if (typeof game["on" + event] == "function" && game.isFocused()) {
+                	game["on" + event](e);
+            	}
+        	});
+    	});
+	});
 
 
-function run() {
-    games.forEach(function(game) {
-        game.clear();
-        game.update();
-        game.render();
-    });
-    requestAnimationFrame(run);
+	function run() {
+    	games.forEach(function(game) {
+        	game.clear();
+        	game.update();
+        	game.render();
+    	});
+    	requestAnimationFrame(run);
+	}
+	requestAnimationFrame(run);
 }
 
-requestAnimationFrame(run);
+pushDefault("spawn", SpawnTest);
+pushDefault("gravity", GravityTest);
+pushDefault("canvas", CanvasTest);
