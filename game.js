@@ -411,7 +411,7 @@ function init() {
 		document.addEventListener(event, function(e) {
 			games.forEach(function(game) {
 				if(game.listenerCallbacks[event] !== null && game.isFocused()) {
-					game.listenerCallbacks.forEach((callback) => {
+					game.listenerCallbacks[event].forEach((callback) => {
 						callback(e);
 					})
 				}
