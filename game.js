@@ -260,7 +260,7 @@ class MovablePlayer extends Player {
 					instance.keys[e.key] = true;
 				
 			}
-		};
+		});
 		this.game.addListener("keyup", (e) => {
 			switch(e.key) {
 				case UP:
@@ -268,7 +268,7 @@ class MovablePlayer extends Player {
 				case RIGHT:
 					instance.keys[e.key] = false;
 			}
-		};
+		});
 	}
 	
 	update() {
@@ -341,7 +341,7 @@ class SpawnTest extends Game {
 	setupListeners() {
 		this.addListener("click", (e) => {
 			this.players.push(new MovablePlayer(this, mouse.x, mouse.y, 15, 15, genColor(), true));
-		}
+		});
 	}
 
 	update() {
