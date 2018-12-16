@@ -18,13 +18,13 @@ const LEFT = "ArrowLeft";
 const RIGHT = "ArrowRight";
 
 const mouse = {
-    x : 0, y : 0,  // coordinates
+	x : 0, y : 0,  // coordinates
 }
 
 function clamp(min, max, variable) {
-    if (variable < min) return min;
-    if (variable > max) return max;
-    return variable;
+	if (variable < min) return min;
+	if (variable > max) return max;
+	return variable;
 }
 
 /*
@@ -63,35 +63,36 @@ CanvasRenderingContext2D.prototype.fillOval = function(x, y, width, height) {
 
 class Game {
 
-    constructor(attributes) {
+	constructor(attributes) {
+		this.listenerCallbacks = {};
 		this.attributes = attributes;
 		this.focused = false;
-        this.setupCanvas();
-    }
+		this.setupCanvas();
+	}
 
-    getWidth() {
-        return this.canvas.width;
-    }
+	getWidth() {
+		return this.canvas.width;
+	}
 
-    getHeight() {
-        return this.canvas.height;
-    }
+	getHeight() {
+		return this.canvas.height;
+	}
 
-    getCanvas() {
-        return this.canvas;
-    }
+	getCanvas() {
+		return this.canvas;
+	}
 
-    getContext() {
-        return this.context;
-    }
+	getContext() {
+		return this.context;
+	}
 
-    getColor() {
-        return this.color;
-    }
-    
-    getStroke() {
-    	return this.stroke;
-    }
+	getColor() {
+		return this.color;
+	}
+	
+	getStroke() {
+		return this.stroke;
+	}
 	
 	isFocused() {
 		return this.focused;
@@ -101,34 +102,34 @@ class Game {
 		this.focused = verify(boolean, true);
 	}
 
-    setWidth(width) {
-        this.getCanvas().width = width;
-    }
+	setWidth(width) {
+		this.getCanvas().width = width;
+	}
 
-    setHeight(height) {
-        this.getCanvas().height = height;
-    }
+	setHeight(height) {
+		this.getCanvas().height = height;
+	}
 
-    setupCanvas() {
-        if (!this.canvas) {
-		    this.canvas = document.createElement("canvas");
+	setupCanvas() {
+		if (!this.canvas) {
+			this.canvas = document.createElement("canvas");
 			this.color = verify(this.attributes.color, DEFAULT_COLOR);
 			this.strokeColor = verify(this.attributes.strokeColor, DEFAULT_COLOR);
 			this.strokeWidth = verify(this.attributes.strokeWidth, null);
-            this.canvas.width = verify(this.attributes.width, DEFAULT_DIMENSION);
-            this.canvas.height = verify(this.attributes.height, DEFAULT_DIMENSION);
-            this.context = this.canvas.getContext("2d");
+			this.canvas.width = verify(this.attributes.width, DEFAULT_DIMENSION);
+			this.canvas.height = verify(this.attributes.height, DEFAULT_DIMENSION);
+			this.context = this.canvas.getContext("2d");
 			document.body.appendChild(this.canvas);
-        }
-    }
+		}
+	}
 
-    clear() {
-        this.getContext().clearRect(0, 0, this.getWidth(), this.getHeight());
-    }
+	clear() {
+		this.getContext().clearRect(0, 0, this.getWidth(), this.getHeight());
+	}
 
-    update() {
+	update() {
 
-    }
+	}
 	
 	render() {
 		this.getContext().save();
@@ -142,27 +143,36 @@ class Game {
 		this.getContext().restore();
 	}
 
-    draw() {
-        this.getContext().fillRect(0, 0, this.getWidth(), this.getHeight());
+	draw() {
+		this.getContext().fillRect(0, 0, this.getWidth(), this.getHeight());
 		this.getContext().strokeRect(0, 0, this.getWidth(), this.getHeight());
-    }
+	}
+
+	addListener(eventName, callback) {
+		if(typeof callback !== "function") return;
+
+		if(!this.listenerCallbacks[eventName]) {
+			this.listenerCallbacks[eventName] = [];
+		}
+		this.listenerCallback[eventName].push(callback);
+	}
 
 }
 
 class Player {
 
-    constructor(game, x, y, width, height, color) {
-        this.game = game;
+	constructor(game, x, y, width, height, color) {
+		this.game = game;
 		this.canvas = game.canvas;
 		this.context = this.canvas.getContext("2d");
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
 		this.setupMovement();
 		this.color = color;
 
-    }
+	}
 	
 	setupMovement() {
 		this.friction = 0.9;
@@ -182,24 +192,24 @@ class Player {
 		this.velY = 0;
 	}
 
-    update() {
+	update() {
 		this.x += this.velX;
-        this.y -= this.velY;
-        this.testSides();
-    }
+		this.y -= this.velY;
+		this.testSides();
+	}
 	
 	isOnGround() {
 		return this.y >= this.canvas.height - this.height;
 	}
 
-    testSides() {
-        this.x = clamp(0, this.canvas.width - this.width, this.x);
+	testSides() {
+		this.x = clamp(0, this.canvas.width - this.width, this.x);
 		this.y = clamp(0, this.canvas.height - this.height, this.y);
-    }
+	}
 
-    draw() {
+	draw() {
 		this.context.fillStyle = this.color;
-        this.context.fillOval(this.x, this.y, this.width, this.height, 0);
+		this.context.fillOval(this.x, this.y, this.width, this.height, 0);
 	}
 
 }
@@ -207,13 +217,13 @@ class Player {
 class MovablePlayer extends Player {
 
 	
-    constructor(game, x, y, width, height, color, bounces) {
+	constructor(game, x, y, width, height, color, bounces) {
 		super(game, x, y, width, height, color);
 		this.keys = [
-            UP => false,
-            LEFT => false,
-            RIGHT => false
-        ];
+			UP => false,
+			LEFT => false,
+			RIGHT => false
+		];
 		this.bounces = verify(bounces, true);
 		this.setupListeners();
 	}
@@ -226,40 +236,40 @@ class MovablePlayer extends Player {
 		}
 	
 		let vel = 0;
-        if (this.keys[LEFT]) {
-            vel = -this.speed;
-        } else if (this.keys[RIGHT]) {
-            vel = this.speed;
-        } else {
+		if (this.keys[LEFT]) {
+			vel = -this.speed;
+		} else if (this.keys[RIGHT]) {
+			vel = this.speed;
+		} else {
 			vel = 0;
-        }
+		}
 		this.velX = vel;
-    }
+	}
 
-    jump() {
-        this.velY = this.jumpHeight;
-    }
+	jump() {
+		this.velY = this.jumpHeight;
+	}
 	
 	setupListeners() {
 		let instance = this;
-        this.game.onkeydown = function(e) {
-        	switch(e.key) {
-        		case UP:
-        		case LEFT:
-        		case RIGHT:
-        			instance.keys[e.key] = true;
-        		
-        	}
-        };
-        this.game.onkeyup = function(e) {
-        	switch(e.key) {
-        		case UP:
-        		case LEFT:
-        		case RIGHT:
-        			instance.keys[e.key] = false;
-        	}
+		this.game.addListener("keydown", (e) => {
+			switch(e.key) {
+				case UP:
+				case LEFT:
+				case RIGHT:
+					instance.keys[e.key] = true;
+				
+			}
 		};
-    }
+		this.game.addListener("keyup", (e) => {
+			switch(e.key) {
+				case UP:
+				case LEFT:
+				case RIGHT:
+					instance.keys[e.key] = false;
+			}
+		};
+	}
 	
 	update() {
 		super.update();
@@ -280,79 +290,79 @@ class MovablePlayer extends Player {
 
 class GravityTest extends Game {
 
-    constructor(attributes) {
-        super(attributes);
+	constructor(attributes) {
+		super(attributes);
 		this.player = new MovablePlayer(this, this.getWidth() / 2, this.getHeight() / 2, 15, 15, "rgb(75, 75, 125)", true);
-    }
+	}
 
-    update() {
-        super.update();
-        this.player.update();
-    }
+	update() {
+		super.update();
+		this.player.update();
+	}
 
-    draw() {
-        super.draw();
-        this.player.draw();
-    }
+	draw() {
+		super.draw();
+		this.player.draw();
+	}
 
 }
 
 class CanvasTest extends Game {
 
 	constructor(attributes) {
-        super(attributes);
+		super(attributes);
 		this.lastUpdate = 0;
 		this.increment = 4;
 		this.counter = 4;
 		let avg = this.getWidth() + this.getHeight() / 2;
 		this.min = avg / 4;
 		this.max = avg * 8;
-    }
+	}
 
-    update() {
-        super.update();
+	update() {
+		super.update();
 		this.lastUpdate += this.increment;
 		if(this.lastUpdate >= this.counter) {
 			this.setWidth(clamp(this.min, this.max, this.getWidth() - 1));
 			this.setHeight(clamp(this.min, this.max, this.getHeight() - 1));
 			this.lastUpdate = 0;
 		}
-    }
+	}
 }
 
 class SpawnTest extends Game {
 
 	constructor(attributes) {
-        super(attributes);
+		super(attributes);
 		this.players = [];
 		this.setupListeners();
-    }
+	}
 	
 	setupListeners() {
-		this.onclick = function(e) {
+		this.addListener("click", (e) => {
 			this.players.push(new MovablePlayer(this, mouse.x, mouse.y, 15, 15, genColor(), true));
 		}
 	}
 
-    update() {
-        super.update();
-        this.players.forEach(function(player) {
+	update() {
+		super.update();
+		this.players.forEach(function(player) {
 			player.update();
 		});
-    }
+	}
 
-    draw() {
-        super.draw();
-        this.players.forEach(function(player) {
+	draw() {
+		super.draw();
+		this.players.forEach(function(player) {
 			player.draw();
 		});
-    }
+	}
 }
 
 let defaults = {};
 
 function getDefault(id) {
-    return defaults[id] || null;
+	return defaults[id] || null;
 }
 
 function pushDefault(id, clazz) {
@@ -367,16 +377,16 @@ function init() {
 	for (let i = 0; i < tags.length; i++) {
 		let attributes = tags[i].getAttributes();
 		console.log(getDefault(attributes.default));
-    	if (getDefault(attributes.default)) {
+		if (getDefault(attributes.default)) {
 			let clazz = getDefault(attributes.default);
-        	games.push(new clazz(attributes));
-    	}
+			games.push(new clazz(attributes));
+		}
 	}
 
 	let eventLists = ["mousedown", "mouseup", "mousemove", "keydown", "keyup", "click"];
 
 	document.addEventListener("click", function(e) {
-    	var canvas = null;
+		var canvas = null;
 	
 		games.forEach(function(game) {
 			if(game.getCanvas() === e.target) {
@@ -385,36 +395,38 @@ function init() {
 			} else {
 			game.setFocused(false);
 			}
-    	});
+		});
 		if(canvas !== null) {
 			var bounds = canvas.getBoundingClientRect();
 			mouse.x = event.pageX - bounds.left - scrollX;
-    		mouse.y = event.pageY - bounds.top - scrollY;
+			mouse.y = event.pageY - bounds.top - scrollY;
 			mouse.x /=  bounds.width; 
-   			mouse.y /=  bounds.height; 
-   			mouse.x *= canvas.width;
-   			mouse.y *= canvas.height;
+			mouse.y /=  bounds.height; 
+			mouse.x *= canvas.width;
+			mouse.y *= canvas.height;
 		}
 	}, true);
 
 	eventLists.forEach(function(event) {
-    	document.addEventListener(event, function(e) {
-        	games.forEach(function(game) {
-            	if (typeof game["on" + event] == "function" && game.isFocused()) {
-                	game["on" + event](e);
-            	}
-        	});
-    	});
+		document.addEventListener(event, function(e) {
+			games.forEach(function(game) {
+				if(game.listenerCallbacks[event] !== null && game.isFocused()) {
+					game.listenerCallbacks.forEach((callback) => {
+						callback(e);
+					})
+				}
+			});
+		});
 	});
 
 
 	function run() {
-    	games.forEach(function(game) {
-        	game.clear();
-        	game.update();
-        	game.render();
-    	});
-    	requestAnimationFrame(run);
+		games.forEach(function(game) {
+			game.clear();
+			game.update();
+			game.render();
+		});
+		requestAnimationFrame(run);
 	}
 	requestAnimationFrame(run);
 }
