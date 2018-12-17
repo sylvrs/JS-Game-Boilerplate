@@ -410,7 +410,7 @@ function init() {
 	eventLists.forEach(function(event) {
 		document.addEventListener(event, function(e) {
 			games.forEach(function(game) {
-				if(game.listenerCallbacks[event] !== null && game.isFocused()) {
+				if(typeof game.listenerCallbacks[event] !== "undefined" && game.listenerCallbacks[event].length > 0 && game.listenerCallbacks[event] !== null && game.isFocused()) {
 					game.listenerCallbacks[event].forEach((callback) => {
 						callback(e);
 					})
