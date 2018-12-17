@@ -159,7 +159,7 @@ class Game {
 
 }
 
-class Player {
+class Entity {
 
 	constructor(game, x, y, width, height, color) {
 		this.game = game;
@@ -214,7 +214,7 @@ class Player {
 
 }
 
-class MovablePlayer extends Player {
+class MovablePlayer extends Entity {
 
 	
 	constructor(game, x, y, width, height, color, bounces) {
