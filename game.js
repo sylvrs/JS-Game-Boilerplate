@@ -203,8 +203,8 @@ class Entity {
 	}
 
 	testSides() {
-		this.x = clamp(0, this.canvas.width - this.width, this.x);
-		this.y = clamp(0, this.canvas.height - this.height, this.y);
+		this.x = clamp(this.width, this.canvas.width - this.width, this.x);
+		this.y = clamp(this.height, this.canvas.height - this.height, this.y);
 	}
 
 	draw() {
