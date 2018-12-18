@@ -194,7 +194,7 @@ class Game {
 	
 	removeEntity(entity) {
 		if(this.containsEntity(entity)) {
-			this.entities.splice(this.entities.indexOf(entity), 0);
+			this.entities.splice(this.entities.indexOf(entity));
 			
 		}
 	}
