@@ -199,11 +199,13 @@ class Entity {
 	}
 	
 	spawn() {
-	
+		if(!this.game.containsEntity(this) {
+		   	this.game.entities.push(this);
+		}	
 	}
 	
 	kill() {
-		if(this.game.hasEntity(this)) {
+		if(this.game.containsEntity(this)) {
 			this.game.removeEntity(this);
 		}
 	}
