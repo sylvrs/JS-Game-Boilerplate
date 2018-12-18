@@ -68,6 +68,7 @@ class Game {
 		this.attributes = attributes;
 		this.focused = false;
 		this.setupCanvas();
+		this.entities =  [];
 	}
 
 	getWidth() {
@@ -156,6 +157,20 @@ class Game {
 		}
 		this.listenerCallbacks[eventName].push(callback);
 	}
+	
+	addEntity(entity) {
+		this.entities.push(entity);
+	}
+	
+	containsEntity(entity) {
+		return this.entities.contains(entity);
+	}
+	
+	removeEntity(entity) {
+		if(this.containsEntity(entity)) {
+			this.entities[this.entities.findIndex(entity)] = null;
+		}
+	}
 
 }
 
@@ -200,7 +215,7 @@ class Entity {
 	
 	spawn() {
 		if(!this.game.containsEntity(this)) {
-		   	this.game.entities.push(this);
+		   	this.game.addEntity(this);
 		}	
 	}
 	
