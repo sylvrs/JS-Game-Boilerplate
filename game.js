@@ -198,8 +198,14 @@ class Entity {
 		this.testSides();
 	}
 	
-	isOnGround() {
-		return this.y >= this.canvas.height - this.height;
+	spawn() {
+	
+	}
+	
+	kill() {
+		if(this.game.hasEntity(this)) {
+			this.game.removeEntity(this);
+		}
 	}
 
 	testSides() {
