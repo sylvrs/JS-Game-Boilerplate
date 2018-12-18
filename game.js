@@ -185,11 +185,11 @@ class Game {
 	}
 	
 	addEntity(entity) {
-		this.entities.push(entity);
+		this.entities[entity.id] = entity;
 	}
 	
 	containsEntity(entity) {
-		return this.entities.contains(entity);
+		return this.entities[entity.id] !== null && this.entities[entity.id] instanceof Entity;
 	}
 	
 	removeEntity(entity) {
