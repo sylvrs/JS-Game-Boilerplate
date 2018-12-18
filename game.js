@@ -194,7 +194,9 @@ class Game {
 	
 	removeEntity(entity) {
 		if(this.containsEntity(entity)) {
-			this.entities.splice(this.entities.indexOf(entity));
+			if(entity.id > -1) {
+				this.entities.splice(entity.id);
+			}
 		}
 	}
 
@@ -212,6 +214,7 @@ class Entity {
 		this.height = height;
 		this.setupMovement();
 		this.color = color;
+		this.id = -1;
 
 	}
 	
@@ -241,6 +244,7 @@ class Entity {
 	
 	spawn() {
 		if(!this.game.containsEntity(this)) {
+			this.id = this.game.entities.length;
 		   	this.game.addEntity(this);
 		}	
 	}
