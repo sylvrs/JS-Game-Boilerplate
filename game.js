@@ -1,14 +1,3 @@
-/*
-==== TODO LIST ====
-
-- Implement options attribute - DONE
-- Implement event attributes
-- Implement Color class
-- Implement game focusing(prevents events from affecting more than one game) - DONE
-
-===================
-*/
-
 const DEFAULT_DIMENSION = 450;
 const DEFAULT_COLOR = "rgb(128, 125, 128)";
 const DEFAULT_STROKE_WIDTH = 0;
