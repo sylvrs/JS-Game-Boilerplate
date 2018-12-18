@@ -201,7 +201,7 @@ class Game {
 	
 	removeEntity(entity) {
 		if(this.containsEntity(entity)) {
-			this.entities[this.entities.findIndex(entity)] = null;
+			this.entities[this.entities.indexOf(entity)] = null;
 		}
 	}
 
