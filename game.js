@@ -87,13 +87,6 @@ Object.prototype.contains = function(element) {
 	return Object.values(this).indexOf(element) > -1;
 }
 
-Object.prototype.findIndex = function(element) {
-	if(this.contains(element)) {
-		return Object.values(this).indexOf(element);
-	}
-	return -1;
-}
-
 class Game {
 
 	constructor(attributes) {
