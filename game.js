@@ -13,9 +13,42 @@ const DEFAULT_DIMENSION = 450;
 const DEFAULT_COLOR = "rgb(128, 125, 128)";
 const DEFAULT_STROKE_WIDTH = 0;
 
-const UP = "ArrowUp";
-const LEFT = "ArrowLeft";
-const RIGHT = "ArrowRight";
+const KEYS = {
+    A: "KeyA",
+    B: "KeyB",
+    C: "KeyC",
+    D: "KeyD",
+    E: "KeyE",
+    F: "KeyF",
+    G: "KeyG",
+    H: "KeyH",
+    I: "KeyI",
+    J: "KeyJ",
+    K: "KeyK",
+    L: "KeyL",
+    M: "KeyM",
+    N: "KeyN",
+    O: "KeyO",
+    P: "KeyP",
+    Q: "KeyQ",
+    R: "KeyR",
+    S: "KeyS",
+    T: "KeyT",
+    U: "KeyU",
+    V: "KeyV",
+    W: "KeyW",
+    X: "KeyX",
+    Y: "KeyY",
+    Z: "KeyZ",
+    SPACE: "Space",
+    ENTER: "Enter",
+    L_SHIFT: "ShiftLeft",
+    R_SHIFT: "ShiftRight",
+	UP: "ArrowUp",
+	LEFT: "ArrowLeft",
+	RIGHT: "ArrowRight",
+	DOWN: "ArrowDown"
+}
 
 const mouse = {
 	x : 0, y : 0,  // coordinates
@@ -59,6 +92,17 @@ CanvasRenderingContext2D.prototype.fillOval = function(x, y, width, height) {
 	this.ellipse(x, y, width, height, 0, 0, 2 * Math.PI);
 	this.fill();
 	this.closePath();
+}
+
+Object.prototype.contains = function(element) {
+	return Object.values(this).indexOf(element) > -1;
+}
+
+Object.prototype.findIndex = function(element) {
+	if(this.contains(element)) {
+		return Object.values(this).indexOf(element);
+	}
+	return -1;
 }
 
 class Game {
