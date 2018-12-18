@@ -37,7 +37,7 @@ const KEYS = {
 	LEFT: "ArrowLeft",
 	RIGHT: "ArrowRight",
 	DOWN: "ArrowDown"
-}
+};
 
 const mouse = {
 	x : 0, y : 0,  // coordinates
