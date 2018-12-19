@@ -194,9 +194,7 @@ class Game {
 	
 	removeEntity(entity) {
 		if(this.containsEntity(entity)) {
-			if(entity.id > -1) {
-				this.entities.splice(entity.id, 1);
-			}
+			delete this.entities[entity.id];
 		}
 	}
 
@@ -214,8 +212,12 @@ class Entity {
 		this.height = height;
 		this.setupMovement();
 		this.color = color;
-		this.id = -1;
-
+		this.timeCreated = Date.now();
+		this.id = this.serialize();
+	}
+	
+	serialize() {
+		return ((this.x + this.y) * (this.width + this.height) * (this.velX + this.velY) * this.timeCreated).toString();
 	}
 	
 	setupMovement() {
@@ -244,7 +246,6 @@ class Entity {
 	
 	spawn() {
 		if(!this.game.containsEntity(this)) {
-			this.id = this.game.entities.length;
 		   	this.game.addEntity(this);
 		}	
 	}
