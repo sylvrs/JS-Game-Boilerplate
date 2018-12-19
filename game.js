@@ -213,7 +213,7 @@ class Entity {
 		this.setupMovement();
 		this.color = color;
 		this.timeCreated = Date.now();
-		this.id = "";
+		this.id = this.serialize();
 	}
 	
 	serialize() {
@@ -246,7 +246,6 @@ class Entity {
 	
 	spawn() {
 		if(!this.game.containsEntity(this)) {
-			this.id = this.serialize();
 		   	this.game.addEntity(this);
 		}	
 	}
