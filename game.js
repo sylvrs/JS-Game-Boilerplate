@@ -213,11 +213,11 @@ class Entity {
 		this.setupMovement();
 		this.color = color;
 		this.timeCreated = Date.now();
-		this.id = this.serialize();
+		this.id = "";
 	}
 	
 	serialize() {
-		return ((this.x + this.y) * (this.width + this.height) * (this.velX + this.velY) * this.timeCreated).toString();
+		return (((this.x + this.y) === 0 ? 1 : this.x + this.y) * (this.width + this.height) * ((this.velX + this.velY) === 0 ? 1 : this.velX + this.velY) * this.timeCreated).toString();
 	}
 	
 	setupMovement() {
@@ -246,6 +246,7 @@ class Entity {
 	
 	spawn() {
 		if(!this.game.containsEntity(this)) {
+			this.id = this.serialize();
 		   	this.game.addEntity(this);
 		}	
 	}
