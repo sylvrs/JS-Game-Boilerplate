@@ -202,7 +202,7 @@ class Game {
 
 class Entity {
 
-	constructor(game, x, y, width, height, color) {
+	constructor(game, x, y, width, height, color, type) {
 		this.game = game;
 		this.canvas = game.canvas;
 		this.context = this.canvas.getContext("2d");
@@ -212,6 +212,7 @@ class Entity {
 		this.height = height;
 		this.setupMovement();
 		this.color = color;
+		this.type = type;
 		this.timeCreated = Date.now();
 		this.id = this.serialize();
 	}
@@ -263,7 +264,16 @@ class Entity {
 
 	draw() {
 		this.context.fillStyle = this.color;
-		this.context.fillOval(this.x, this.y, this.width, this.height, 0);
+		switch(this.type) {
+			case "circle":
+			case "oval":
+				this.context.fillOval(this.x, this.y, this.width, this.height, 0);
+				break;
+			case "square":
+			case "rectangle":
+			default:
+				this.context.fillRect(this.x, this.y, this.width, this.height);
+		}
 	}
 
 }
